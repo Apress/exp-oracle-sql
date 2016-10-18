@@ -1,0 +1,1 @@
+SELECT * FROM TABLE (DBMS_XPLAN.display_awr ('6xvp6nxs4a9n4'));

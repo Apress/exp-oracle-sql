@@ -1,0 +1,16 @@
+ALTER SESSION ENABLE PARALLEL DML;
+
+INSERT INTO t2 (c2)
+   SELECT /*+ parallel */
+         c1 FROM t1;
+
+INSERT /*+ parallel(t3 10) */
+      INTO  t3 (c3)
+   SELECT c1 FROM t1;
+
+ALTER TABLE t3 PARALLEL 10;
+
+INSERT INTO t3 (c3)
+   SELECT c1 FROM t1;
+
+COMMIT;

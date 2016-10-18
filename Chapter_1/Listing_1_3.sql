@@ -1,0 +1,11 @@
+SELECT 'LITERAL 1' FROM DUAL;
+
+SELECT prev_sql_id
+  FROM v$session
+ WHERE sid = SYS_CONTEXT ('USERENV', 'SID');
+
+SELECT 'LITERAL 2' FROM DUAL;
+
+SELECT prev_sql_id
+  FROM v$session
+ WHERE sid = SYS_CONTEXT ('USERENV', 'SID');

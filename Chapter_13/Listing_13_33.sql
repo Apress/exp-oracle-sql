@@ -1,0 +1,26 @@
+CREATE TABLE t
+PARTITION BY RANGE
+   (d)
+   (
+      PARTITION
+         t_q1_2013 VALUES LESS THAN (TO_DATE ('2013-04-01', 'yyyy-mm-dd'))
+     ,PARTITION
+         t_q2_2013 VALUES LESS THAN (TO_DATE ('2013-07-01', 'yyyy-mm-dd'))
+     ,PARTITION
+         t_q3_2013 VALUES LESS THAN (TO_DATE ('2013-10-01', 'yyyy-mm-dd'))
+     ,PARTITION
+         t_q4_2013 VALUES LESS THAN (TO_DATE ('2014-01-01', 'yyyy-mm-dd')))
+PCTFREE 99
+PCTUSED 1
+AS
+       SELECT DATE '2013-01-01' + ROWNUM - 1 d, ROWNUM n
+         FROM DUAL
+   CONNECT BY LEVEL <= 365;
+
+CREATE INDEX i
+   ON t (n)
+   LOCAL
+   UNUSABLE;
+
+ALTER INDEX i
+   REBUILD PARTITION t_q3_2013;

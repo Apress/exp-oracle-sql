@@ -1,0 +1,32 @@
+SET LINES 2000 PAGES 0 SERVEROUT OFF
+ALTER SYSTEM FLUSH SHARED_POOL;
+
+DELETE FROM t3;
+
+INSERT INTO t3 (c1, c2,c3)
+       SELECT ROWNUM, DATE '2014-04-01' + MOD (ROWNUM, 2),rpad('X',2000)
+         FROM DUAL
+   CONNECT BY LEVEL <= 1000;
+
+EXPLAIN PLAN
+   FOR
+      SELECT *
+        FROM t3
+       WHERE t3.c2 = TO_DATE ( :b1, 'DD-MON-YYYY');
+
+SELECT * FROM TABLE (DBMS_XPLAN.display);
+
+VARIABLE b1 VARCHAR2(11)
+EXEC :b1 := '01-APR-2014';
+
+BEGIN
+   FOR r IN (SELECT *
+               FROM t3
+              WHERE t3.c2 = TO_DATE ( :b1, 'DD-MON-YYYY'))
+   LOOP
+      NULL;
+   END LOOP;
+END;
+/
+
+SELECT * FROM TABLE (DBMS_XPLAN.display_cursor (sql_id => 'dgcvn46zatdqr'));

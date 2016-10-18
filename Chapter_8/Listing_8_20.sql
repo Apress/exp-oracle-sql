@@ -1,0 +1,22 @@
+CREATE TABLE t5
+PARTITION BY HASH (c1)
+   PARTITIONS 16
+AS
+       SELECT ROWNUM c1, ROWNUM c2
+         FROM DUAL
+   CONNECT BY LEVEL <= 10000;
+
+CREATE INDEX t5_i1
+   ON t5 (c2)
+   LOCAL;
+
+SET LINES 200 PAGES 0
+
+EXPLAIN PLAN
+   FOR
+      SELECT /*+ index(t5) parallel_index(t5) */
+             *
+        FROM t5
+       WHERE c2 IS NOT NULL;
+
+SELECT * FROM TABLE (DBMS_XPLAN.display (format => 'BASIC +PARTITION'));

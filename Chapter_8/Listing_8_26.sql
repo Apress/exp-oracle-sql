@@ -1,0 +1,32 @@
+SET LINES 200 PAGES 0
+
+ALTER SESSION FORCE PARALLEL QUERY PARALLEL 2;
+
+EXPLAIN PLAN
+   FOR
+      SELECT *
+        FROM sh.customers c
+       WHERE cust_id < 100;
+
+SELECT * FROM TABLE (DBMS_XPLAN.display);
+
+EXPLAIN PLAN
+   FOR
+      SELECT /*+ full(c) */
+             *
+        FROM sh.customers c
+       WHERE cust_id < 100;
+
+SELECT * FROM TABLE (DBMS_XPLAN.display);
+
+ALTER SESSION FORCE PARALLEL QUERY PARALLEL 20;
+
+EXPLAIN PLAN
+   FOR
+      SELECT *
+        FROM sh.customers c
+       WHERE cust_id < 100;
+
+SELECT * FROM TABLE (DBMS_XPLAN.display);
+
+ALTER SESSION ENABLE PARALLEL QUERY;

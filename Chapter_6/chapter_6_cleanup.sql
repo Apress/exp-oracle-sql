@@ -1,0 +1,4 @@
+DROP TABLE t3;
+DROP TABLE temp1;
+DROP PROCEDURE listing_6_6;
+DROP PROCEDURE listing_6_7;

@@ -1,0 +1,20 @@
+SET LINES 200 PAGES 0
+
+ALTER SESSION DISABLE PARALLEL QUERY;
+
+DROP INDEX t1_i1;
+
+CREATE OR REPLACE VIEW v1
+AS
+     SELECT c1, MEDIAN (c2) med_c2
+       FROM t1, t2
+      WHERE t1.c1 = t2.c2
+   GROUP BY t1.c1;
+
+EXPLAIN PLAN
+   FOR
+      SELECT *
+        FROM v1, t3
+       WHERE v1.c1 = t3.c3;
+
+SELECT * FROM TABLE (DBMS_XPLAN.display (format => 'ADVANCED'));

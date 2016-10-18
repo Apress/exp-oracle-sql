@@ -1,0 +1,10 @@
+DROP TABLE statement;
+DROP TABLE statement_part_ch15;
+DROP TABLE order_items_compress;
+DROP TABLE global_part_index_test;
+DROP TABLE process_status;
+DROP TABLE order_items_part;
+DROP TABLE orders_part;
+DROP TABLE sales_2;
+DROP TABLE customers_2;
+DROP TABLE products_2;
